@@ -166,16 +166,16 @@ export default function HomePage() {
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <MagneticButton 
-                  className="btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200"
-                  strength={0.3}
-                  onClick={typeof current.primaryAction === 'function' ? current.primaryAction : undefined}
-                >
-                  {current.primaryCTA}
-                  <Play className="w-5 h-5 ml-2" />
-                </MagneticButton>
-                
+              <div className="flex sm:flex-row gap-4 justify-center mb-12">
+              <MagneticButton 
+  className="btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center"
+  strength={0.3}
+  onClick={typeof current.primaryAction === 'function' ? current.primaryAction : undefined}
+>
+  <span>{current.primaryCTA}</span>
+  <Play className="w-5 h-5 ml-2" />
+</MagneticButton>
+
                 <Link href={typeof current.secondaryAction === 'string' ? current.secondaryAction : '#'}>
                   <Button
                     size="lg"
