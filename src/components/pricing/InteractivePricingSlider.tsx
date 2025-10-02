@@ -90,34 +90,46 @@ export default function InteractivePricingSlider() {
             key={tier.id}
             className={`relative border-2 transition-all duration-300 cursor-pointer transform hover:scale-105 ${
               selectedTier === tier.id
-                ? 'border-blue-500 shadow-xl'
+                ? 'border-blue-500 shadow-xl bg-blue-50'
                 : 'border-slate-200 hover:border-slate-300'
-            } ${tier.popular ? 'ring-2 ring-blue-500' : ''}`}
+            } ${tier.popular ? 'ring-2 ring-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50' : 'bg-white'}`}
             onClick={() => setSelectedTier(tier.id)}
           >
             {tier.popular && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-1 rounded-full text-sm font-medium shadow-lg">
                   Most Popular
                 </span>
               </div>
             )}
 
-            <div className="p-8">
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">{tier.name}</h3>
-              <p className="text-slate-600 mb-6">{tier.description}</p>
+            <div className="p-8 relative">
+              <h3 className={`text-2xl font-bold mb-2 ${
+                tier.popular ? 'text-slate-900' : 'text-slate-900'
+              }`}>
+                {tier.name}
+              </h3>
+              <p className={`mb-6 ${
+                tier.popular ? 'text-slate-700' : 'text-slate-600'
+              }`}>
+                {tier.description}
+              </p>
 
               <div className="mb-6">
                 <div className="flex items-baseline">
-                  <span className="text-4xl font-bold text-slate-900">
+                  <span className={`text-4xl font-bold ${
+                    tier.popular ? 'text-blue-900' : 'text-slate-900'
+                  }`}>
                     £{isYearly ? tier.yearlyPrice : tier.monthlyPrice}
                   </span>
-                  <span className="text-slate-500 ml-2">
+                  <span className={`ml-2 ${
+                    tier.popular ? 'text-slate-600' : 'text-slate-500'
+                  }`}>
                     /{isYearly ? 'year' : 'month'}
                   </span>
                 </div>
                 {isYearly && (
-                  <p className="text-sm text-green-600 mt-1">
+                  <p className="text-sm text-green-700 mt-1 font-medium">
                     Save £{(tier.monthlyPrice * 12) - tier.yearlyPrice} per year
                   </p>
                 )}
@@ -126,14 +138,20 @@ export default function InteractivePricingSlider() {
               <ul className="space-y-3 mb-8">
                 {tier.features.map((feature, index) => (
                   <li key={index} className="flex items-start">
-                    <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-slate-700">{feature}</span>
+                    <CheckCircle2 className={`w-5 h-5 mr-3 mt-0.5 flex-shrink-0 ${
+                      tier.popular ? 'text-blue-600' : 'text-green-600'
+                    }`} />
+                    <span className={`${
+                      tier.popular ? 'text-slate-800' : 'text-slate-700'
+                    }`}>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
 
               <Button
-                variant={selectedTier === tier.id ? 'primary' : 'secondary'}
+                variant={selectedTier === tier.id || tier.popular ? 'primary' : 'secondary'}
                 className="w-full"
                 size="lg"
               >

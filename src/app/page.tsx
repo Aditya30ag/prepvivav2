@@ -354,7 +354,6 @@ export default function HomePage() {
 
       {/* Pricing */}
       <Pricing />
-
       {/* FAQ */}
       <FAQ />
 

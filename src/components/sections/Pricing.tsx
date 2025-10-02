@@ -70,62 +70,84 @@ export default function Pricing() {
           {plans.map((plan) => (
             <div 
               key={plan.name}
-              className={`relative rounded-2xl p-8 ${
+              className={`relative rounded-2xl p-8 flex flex-col h-full ${
                 plan.popular 
-                  ? 'bg-primary-600 text-white shadow-2xl scale-105' 
-                  : 'bg-white border-2 border-neutral-200'
+                  ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-2xl scale-105 border-2 border-blue-400' 
+                  : 'bg-white border-2 border-neutral-200 hover:border-neutral-300 transition-colors'
               }`}
+              style={plan.popular ? {
+                backgroundColor: '#1e40af',
+                background: 'linear-gradient(135deg, #2563eb 0%, #1e40af 100%)',
+                color: '#ffffff'
+              } : {}}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-accent-green text-white px-4 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-accent-green text-white px-4 py-1 rounded-full text-sm font-medium"
+                        style={{ backgroundColor: '#10b981', color: '#ffffff' }}>
                     Most Popular
                   </span>
                 </div>
               )}
 
               <div className="mb-6">
-                <h3 className={`text-2xl font-bold mb-2 ${plan.popular ? 'text-white' : 'text-neutral-800'}`}>
+                <h3 className={`text-2xl font-bold mb-2 ${plan.popular ? 'text-white' : 'text-neutral-800'}`}
+                    style={plan.popular ? { color: '#ffffff !important' } : {}}>
                   {plan.name}
                 </h3>
                 <div className="flex items-baseline gap-2 mb-1">
-                  <span className={`text-4xl font-bold ${plan.popular ? 'text-white' : 'text-neutral-800'}`}>
+                  <span className={`text-4xl font-bold ${plan.popular ? 'text-white' : 'text-neutral-800'}`}
+                        style={plan.popular ? { color: '#ffffff !important' } : {}}>
                     {plan.price}
                   </span>
-                  <span className={`text-sm ${plan.popular ? 'text-primary-100' : 'text-neutral-500'}`}>
+                  <span className={`text-sm ${plan.popular ? 'text-white/80' : 'text-neutral-500'}`}
+                        style={plan.popular ? { color: 'rgba(255, 255, 255, 0.9) !important' } : {}}>
                     {plan.unit}
                   </span>
                 </div>
                 {plan.savings && (
                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
                     plan.popular ? 'bg-white/20 text-white' : 'bg-accent-green/10 text-accent-green'
-                  }`}>
+                  }`}
+                        style={plan.popular ? { backgroundColor: 'rgba(255, 255, 255, 0.2)', color: '#ffffff !important' } : {}}>
                     {plan.savings}
                   </span>
                 )}
-                <p className={`mt-3 ${plan.popular ? 'text-primary-100' : 'text-neutral-600'}`}>
+                <p className={`mt-3 ${plan.popular ? 'text-white/90' : 'text-neutral-600'}`}
+                   style={plan.popular ? { color: 'rgba(255, 255, 255, 0.95) !important' } : {}}>
                   {plan.description}
                 </p>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-8 flex-grow">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <svg className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.popular ? 'text-primary-200' : 'text-accent-green'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <svg className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.popular ? 'text-white/80' : 'text-accent-green'}`} 
+                         fill="currentColor" viewBox="0 0 20 20"
+                         style={plan.popular ? { color: 'rgba(255, 255, 255, 0.9) !important' } : {}}>
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className={plan.popular ? 'text-primary-50' : 'text-neutral-700'}>
+                    <span className={plan.popular ? 'text-white' : 'text-neutral-700'}
+                          style={plan.popular ? { color: '#ffffff !important' } : {}}>
                       {feature}
                     </span>
                   </li>
                 ))}
               </ul>
 
-              <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
+              <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all shadow-lg ${
                 plan.popular 
-                  ? 'bg-white text-primary-600 hover:bg-primary-50' 
-                  : 'bg-primary-600 text-white hover:bg-primary-700'
-              }`}>
+                  ? 'bg-white text-primary-600 hover:bg-neutral-50 hover:shadow-xl' 
+                  : 'bg-primary-600 text-white hover:bg-primary-700 hover:shadow-xl'
+              }`}
+                      style={plan.popular ? { 
+                        backgroundColor: '#ffffff !important', 
+                        color: '#2563eb !important',
+                        border: 'none'
+                      } : {
+                        backgroundColor: '#2563eb !important',
+                        color: '#ffffff !important'
+                      }}>
                 {plan.cta}
               </button>
             </div>
