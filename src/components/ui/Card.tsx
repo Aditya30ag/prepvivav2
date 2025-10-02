@@ -5,9 +5,10 @@ interface CardProps {
   className?: string
   hover?: boolean
   padding?: 'sm' | 'md' | 'lg'
+  onClick?: () => void
 }
 
-export default function Card({ children, className, hover = false, padding = 'md' }: CardProps) {
+export default function Card({ children, className, hover = false, padding = 'md', onClick }: CardProps) {
   return (
     <div
       className={clsx(
@@ -18,9 +19,11 @@ export default function Card({ children, className, hover = false, padding = 'md
           'p-4': padding === 'sm',
           'p-6 md:p-8': padding === 'md',
           'p-8 md:p-12': padding === 'lg',
+          'cursor-pointer': onClick,
         },
         className
       )}
+      onClick={onClick}
     >
       {children}
     </div>

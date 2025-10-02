@@ -1,7 +1,12 @@
 import { Star, Quote } from 'lucide-react'
 import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
-import TiltCard from '@/components/effects/TiltCard'
+import dynamic from 'next/dynamic'
+
+const TiltCard = dynamic(
+  () => import('@/components/effects/TiltCard'),
+  { ssr: false }
+)
 
 export default function Testimonials() {
   const testimonials = [

@@ -1,55 +1,50 @@
 'use client'
 
-import { useRef, useEffect, ReactNode } from 'react'
+import { useRef, useState, MouseEvent, ReactNode } from 'react'
 
 interface MagneticButtonProps {
   children: ReactNode
   className?: string
-  strength?: number
   onClick?: () => void
+  strength?: number
 }
 
-export default function MagneticButton({
-  children,
-  className = '',
-  strength = 0.2,
-  onClick
+export default function MagneticButton({ 
+  children, 
+  className = '', 
+  onClick,
+  strength = 0.3 
 }: MagneticButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
 
-  useEffect(() => {
-    const button = buttonRef.current
-    if (!button) return
+  const handleMouseMove = (e: MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current) return
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = button.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      
-      const deltaX = (e.clientX - centerX) * strength
-      const deltaY = (e.clientY - centerY) * strength
+    const rect = buttonRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    
+    const deltaX = (e.clientX - centerX) * strength
+    const deltaY = (e.clientY - centerY) * strength
+    
+    setPosition({ x: deltaX, y: deltaY })
+  }
 
-      button.style.transform = `translate(${deltaX}px, ${deltaY}px)`
-    }
-
-    const handleMouseLeave = () => {
-      button.style.transform = 'translate(0px, 0px)'
-    }
-
-    button.addEventListener('mousemove', handleMouseMove)
-    button.addEventListener('mouseleave', handleMouseLeave)
-
-    return () => {
-      button.removeEventListener('mousemove', handleMouseMove)
-      button.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  }, [strength])
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 })
+  }
 
   return (
     <button
       ref={buttonRef}
-      className={`transition-transform duration-200 ease-out ${className}`}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
+      className={`transition-transform duration-300 ${className}`}
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`
+      }}
     >
       {children}
     </button>

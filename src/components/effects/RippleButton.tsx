@@ -1,62 +1,65 @@
 'use client'
 
-import { useRef, ReactNode } from 'react'
+import { useState, MouseEvent, ReactNode } from 'react'
 
 interface RippleButtonProps {
   children: ReactNode
   className?: string
   onClick?: () => void
-  disabled?: boolean
 }
 
-export default function RippleButton({
-  children,
-  className = '',
-  onClick,
-  disabled = false
-}: RippleButtonProps) {
-  const buttonRef = useRef<HTMLButtonElement>(null)
+interface Ripple {
+  x: number
+  y: number
+  size: number
+  id: number
+}
 
-  const createRipple = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const button = buttonRef.current
-    if (!button) return
+export default function RippleButton({ children, className = '', onClick }: RippleButtonProps) {
+  const [ripples, setRipples] = useState<Ripple[]>([])
 
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    const button = e.currentTarget
     const rect = button.getBoundingClientRect()
+    
     const size = Math.max(rect.width, rect.height)
     const x = e.clientX - rect.left - size / 2
     const y = e.clientY - rect.top - size / 2
-
-    const ripple = document.createElement('span')
-    ripple.style.cssText = `
-      position: absolute;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.6);
-      transform: scale(0);
-      left: ${x}px;
-      top: ${y}px;
-      width: ${size}px;
-      height: ${size}px;
-      pointer-events: none;
-    `
-    ripple.classList.add('animate-ripple')
-
-    button.appendChild(ripple)
-
+    
+    const newRipple: Ripple = {
+      x,
+      y,
+      size,
+      id: Date.now()
+    }
+    
+    setRipples((prev) => [...prev, newRipple])
+    
     setTimeout(() => {
-      ripple.remove()
+      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id))
     }, 600)
-
+    
     onClick?.()
   }
 
   return (
     <button
-      ref={buttonRef}
+      onClick={handleClick}
       className={`relative overflow-hidden ${className}`}
-      onClick={createRipple}
-      disabled={disabled}
     >
       {children}
+      {ripples.map((ripple) => (
+        <span
+          key={ripple.id}
+          className="absolute bg-white/30 rounded-full animate-ripple pointer-events-none"
+          style={{
+            left: ripple.x,
+            top: ripple.y,
+            width: ripple.size,
+            height: ripple.size,
+          }}
+        />
+      ))}
     </button>
   )
 }

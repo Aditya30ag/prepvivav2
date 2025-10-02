@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef, ReactNode } from 'react'
+import { useEffect, useRef, useState, ReactNode, Children } from 'react'
 
 interface StaggeredFadeInProps {
   children: ReactNode
@@ -8,19 +8,27 @@ interface StaggeredFadeInProps {
   className?: string
 }
 
-export default function StaggeredFadeIn({
-  children,
+export default function StaggeredFadeIn({ 
+  children, 
   staggerDelay = 100,
   className = ''
 }: StaggeredFadeInProps) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [visibleIndexes, setVisibleIndexes] = useState<Set<number>>(new Set())
   const ref = useRef<HTMLDivElement>(null)
+  const [hasTriggered, setHasTriggered] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
+      (entries) => {
+        if (entries[0].isIntersecting && !hasTriggered) {
+          setHasTriggered(true)
+          
+          const childrenArray = Children.toArray(children)
+          childrenArray.forEach((_, index) => {
+            setTimeout(() => {
+              setVisibleIndexes((prev) => new Set(prev).add(index))
+            }, index * staggerDelay)
+          })
         }
       },
       { threshold: 0.1 }
@@ -31,28 +39,24 @@ export default function StaggeredFadeIn({
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [children, staggerDelay, hasTriggered])
 
-  useEffect(() => {
-    if (!isVisible || !ref.current) return
-
-    const childElements = ref.current.children
-    Array.from(childElements).forEach((child, index) => {
-      const element = child as HTMLElement
-      element.style.opacity = '0'
-      element.style.transform = 'translateY(20px)'
-      element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'
-
-      setTimeout(() => {
-        element.style.opacity = '1'
-        element.style.transform = 'translateY(0)'
-      }, index * staggerDelay)
-    })
-  }, [isVisible, staggerDelay])
+  const childrenArray = Children.toArray(children)
 
   return (
     <div ref={ref} className={className}>
-      {children}
+      {childrenArray.map((child, index) => (
+        <div
+          key={index}
+          className={`transition-all duration-500 ${
+            visibleIndexes.has(index)
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-4'
+          }`}
+        >
+          {child}
+        </div>
+      ))}
     </div>
   )
 }

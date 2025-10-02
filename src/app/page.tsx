@@ -12,9 +12,14 @@ import Testimonials from '@/components/sections/Testimonials'
 import FAQ from '@/components/sections/FAQ'
 import DemoModal from '@/components/modals/DemoModal'
 import ScrollProgress from '@/components/effects/ScrollProgress'
-import ParallaxBackground from '@/components/effects/ParallaxBackground'
 import CountUpNumber from '@/components/effects/CountUpNumber'
 import MagneticButton from '@/components/effects/MagneticButton'
+import dynamic from 'next/dynamic'
+
+const ParallaxBackground = dynamic(
+  () => import('@/components/effects/ParallaxBackground'),
+  { ssr: false }
+)
 import { 
   GraduationCap, 
   Building2, 

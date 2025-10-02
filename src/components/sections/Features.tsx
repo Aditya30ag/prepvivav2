@@ -1,7 +1,12 @@
 import { Brain, Zap, Target, PoundSterling, Shield, TrendingUp, CheckCircle2 } from 'lucide-react'
 import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
-import StaggeredFadeIn from '@/components/effects/StaggeredFadeIn'
+import dynamic from 'next/dynamic'
+
+const StaggeredFadeIn = dynamic(
+  () => import('@/components/effects/StaggeredFadeIn'),
+  { ssr: false }
+)
 
 export default function Features() {
   const features = [
