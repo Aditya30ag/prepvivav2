@@ -1,6 +1,7 @@
 import { Star, Quote } from 'lucide-react'
 import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
+import TiltCard from '@/components/effects/TiltCard'
 
 export default function Testimonials() {
   const testimonials = [
@@ -68,7 +69,8 @@ export default function Testimonials() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, idx) => (
-            <Card key={idx} hover className="bg-white border border-slate-200 relative">
+            <TiltCard key={idx} maxTilt={8}>
+              <Card hover className="bg-white border border-slate-200 relative">
               <div className="absolute top-6 right-6 text-blue-100">
                 <Quote className="w-12 h-12" />
               </div>
@@ -120,6 +122,7 @@ export default function Testimonials() {
                 <div className="text-sm font-medium text-blue-600">{testimonial.university}</div>
               </div>
             </Card>
+            </TiltCard>
           ))}
         </div>
 

@@ -1,6 +1,7 @@
 import { Brain, Zap, Target, PoundSterling, Shield, TrendingUp, CheckCircle2 } from 'lucide-react'
 import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
+import StaggeredFadeIn from '@/components/effects/StaggeredFadeIn'
 
 export default function Features() {
   const features = [
@@ -60,7 +61,7 @@ export default function Features() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggeredFadeIn staggerDelay={150} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, idx) => {
             const Icon = feature.icon
             const iconColorMap = {
@@ -95,7 +96,7 @@ export default function Features() {
               </Card>
             )
           })}
-        </div>
+        </StaggeredFadeIn>
 
         {/* Additional Trust Signals */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">

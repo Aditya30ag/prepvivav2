@@ -6,6 +6,7 @@ import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import { FloatingLabelInput, FloatingLabelTextarea } from '@/components/ui/FloatingLabelInput'
 import { Mail, Send, CheckCircle2, AlertCircle, Clock, Users, Award, Shield } from 'lucide-react'
 
 export default function ContactPage() {
@@ -137,45 +138,22 @@ export default function ContactPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-3 border ${errors.name ? 'border-red-300 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'} rounded-lg focus:ring-2 focus:outline-none transition-colors`}
-                    placeholder="Jane Doe"
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
-                      {errors.name}
-                    </p>
-                  )}
-                </div>
+                <FloatingLabelInput
+                  label="Full Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  error={errors.name}
+                />
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-3 border ${errors.email ? 'border-red-300 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'} rounded-lg focus:ring-2 focus:outline-none transition-colors`}
-                    placeholder="jane.doe@email.com"
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
+                <FloatingLabelInput
+                  type="email"
+                  label="Email Address"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  error={errors.email}
+                />
               </div>
 
               <div>
@@ -202,25 +180,14 @@ export default function ContactPage() {
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Message *
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={5}
-                  className={`w-full px-4 py-3 border ${errors.message ? 'border-red-300 focus:ring-red-500' : 'border-slate-300 focus:ring-blue-500'} rounded-lg focus:ring-2 focus:outline-none transition-colors resize-none`}
-                  placeholder="Type your message here..."
-                />
-                {errors.message && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.message}
-                  </p>
-                )}
-              </div>
+              <FloatingLabelTextarea
+                label="Your Message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={5}
+                error={errors.message}
+              />
 
               <div className="text-center">
                 <Button

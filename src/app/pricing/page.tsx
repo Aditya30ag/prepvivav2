@@ -3,6 +3,7 @@ import Container from '@/components/ui/Container'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import InteractivePricingSlider from '@/components/pricing/InteractivePricingSlider'
 import { CheckCircle2, Clock, Zap, Award, Shield, HelpCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -161,6 +162,26 @@ export default function PricingPage() {
               <span className="text-slate-400 line-through">£75-150/hour</span>
               <span className="text-green-600 font-bold">PrepViva: From £11/session</span>
             </div>
+          </div>
+
+          {/* Interactive Pricing Slider */}
+          <section className="py-16 bg-slate-50 rounded-2xl mb-16">
+            <Container size="xl">
+              <h2 className="text-3xl font-bold text-center mb-12">
+                Find Your Perfect Package
+              </h2>
+              <InteractivePricingSlider />
+            </Container>
+          </section>
+
+          {/* Alternative Static Pricing Cards */}
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">
+              Or Choose from Our Standard Packages
+            </h3>
+            <p className="text-slate-600">
+              Traditional credit packages with bonus sessions
+            </p>
           </div>
 
           {/* Pricing Cards */}

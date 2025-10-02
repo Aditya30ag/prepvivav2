@@ -11,6 +11,10 @@ import Pricing from '@/components/sections/Pricing'
 import Testimonials from '@/components/sections/Testimonials'
 import FAQ from '@/components/sections/FAQ'
 import DemoModal from '@/components/modals/DemoModal'
+import ScrollProgress from '@/components/effects/ScrollProgress'
+import ParallaxBackground from '@/components/effects/ParallaxBackground'
+import CountUpNumber from '@/components/effects/CountUpNumber'
+import MagneticButton from '@/components/effects/MagneticButton'
 import { 
   GraduationCap, 
   Building2, 
@@ -85,6 +89,12 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Add scroll progress bar */}
+      <ScrollProgress />
+      
+      {/* Add floating background orbs */}
+      <ParallaxBackground />
+      
       {/* Hero Section */}
       <section className="relative bg-gradient-to-b from-slate-50 to-white pt-20 pb-24 overflow-hidden">
         {/* Background Pattern */}
@@ -152,16 +162,14 @@ export default function HomePage() {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button
-                  size="lg"
-                  variant="primary"
+                <MagneticButton 
+                  className="btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200"
+                  strength={0.3}
                   onClick={typeof current.primaryAction === 'function' ? current.primaryAction : undefined}
-                  className="text-lg px-8 py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200"
-                  data-event="hero_primary_cta"
                 >
                   {current.primaryCTA}
                   <Play className="w-5 h-5 ml-2" />
-                </Button>
+                </MagneticButton>
                 
                 <Link href={typeof current.secondaryAction === 'string' ? current.secondaryAction : '#'}>
                   <Button
@@ -195,7 +203,29 @@ export default function HomePage() {
                         <StatIcon className="w-5 h-5 text-blue-600" />
                       </div>
                       <div className="text-3xl font-bold text-slate-900 mb-1">
-                        {stat.value}
+                        {stat.value.includes('%') ? (
+                          <CountUpNumber 
+                            end={parseInt(stat.value)} 
+                            suffix="%"
+                            duration={2000}
+                            className="text-3xl font-bold text-slate-900"
+                          />
+                        ) : stat.value.includes('+') ? (
+                          <CountUpNumber 
+                            end={parseInt(stat.value.replace(/[^0-9]/g, ''))} 
+                            prefix="+"
+                            duration={2000}
+                            className="text-3xl font-bold text-slate-900"
+                          />
+                        ) : stat.value.includes(',') ? (
+                          <CountUpNumber 
+                            end={parseInt(stat.value.replace(/,/g, ''))} 
+                            duration={2000}
+                            className="text-3xl font-bold text-slate-900"
+                          />
+                        ) : (
+                          stat.value
+                        )}
                       </div>
                       <div className="text-sm text-slate-600">{stat.label}</div>
                     </div>
